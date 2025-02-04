@@ -16,7 +16,7 @@
 
 #include "utils.h"
 
-std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
+std::string kYourName = "Melon"; // Don't forget to change this!
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -31,6 +31,21 @@ std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
  */
 std::set<std::string> get_applicants(std::string filename) {
   // STUDENT TODO: Implement this function.
+  std::ifstream ifs(filename);
+  if (!ifs.is_open()) {
+    std::cout << "failed to open applicants.csv" << '\n';
+  }
+
+  std::set<std::string> applicants;
+  std::string single_line;
+
+  // iterate
+  while(std::getline(ifs, single_line)) {
+    applicants.insert(single_line);
+  }
+
+  ifs.close();
+  return applicants;
 }
 
 /**
@@ -43,6 +58,13 @@ std::set<std::string> get_applicants(std::string filename) {
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
   // STUDENT TODO: Implement this function.
+  std::queue<const std::string *> matches;
+  for (auto student: students) {
+    if (student[0] == name[0]) {
+      matches.push(&student);
+    }
+  }
+  return matches;
 }
 
 /**
@@ -57,6 +79,23 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  */
 std::string get_match(std::queue<const std::string*>& matches) {
   // STUDENT TODO: Implement this function.
+  if (matches.empty()) {
+    return "NO MATCHES FOUND.";
+  }
+  int love_number = 1024;
+  int chosen_number = love_number % matches.size();
+  std::string chosen_one;
+  for (int i = 0; i < matches.size(); ++i) {
+    const std::string* iter = matches.front();
+    matches.pop();
+    if (chosen_number == 0) {
+      chosen_one = *iter;
+      break;
+    }
+    chosen_number--;
+    matches.push(iter);
+  }
+  return chosen_one;
 }
 
 /* #### Please don't modify this call to the autograder! #### */
