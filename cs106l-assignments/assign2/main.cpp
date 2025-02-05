@@ -16,7 +16,7 @@
 
 #include "utils.h"
 
-std::string kYourName = "Melon"; // Don't forget to change this!
+std::string kYourName = "Melon WU"; // Don't forget to change this!
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -59,9 +59,18 @@ std::set<std::string> get_applicants(std::string filename) {
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
   // STUDENT TODO: Implement this function.
   std::queue<const std::string *> matches;
-  for (auto student: students) {
-    if (student[0] == name[0]) {
+
+  // split name from ' '
+  std::string first = name.substr(0, name.find(' '));
+  std::string last = name.substr(name.find(' ') + 1);
+
+  // ATTENTION: use reference to avoid local pointers.
+  for (const auto& student : students) {
+    std::string first_name = student.substr(0, student.find(' '));
+    std::string last_name = student.substr(student.find(' ') + 1);
+    if (first_name[0] == first[0] && last_name[0] == last[0]) {
       matches.push(&student);
+      printf("match: %s\n", student.c_str());
     }
   }
   return matches;
@@ -83,20 +92,30 @@ std::string get_match(std::queue<const std::string*>& matches) {
     return "NO MATCHES FOUND.";
   }
   int love_number = 1024;
-  int chosen_number = love_number % matches.size();
+  int queue_size = matches.size();
+  int chosen_number = love_number % queue_size;
   std::string chosen_one;
-  for (int i = 0; i < matches.size(); ++i) {
+  printf("queue size: %d\n", queue_size);
+  printf("chosen number: %d\n", chosen_number);
+  for (int i = 0; i < queue_size; ++i) {
     const std::string* iter = matches.front();
     matches.pop();
     if (chosen_number == 0) {
+      printf("chosen one: %s\n", iter->c_str());
       chosen_one = *iter;
       break;
     }
     chosen_number--;
     matches.push(iter);
   }
-  return chosen_one;
+  return chosen_one.empty() ? "NO MATCHES FOUND." : chosen_one;
 }
 
 /* #### Please don't modify this call to the autograder! #### */
-int main() { return run_autograder(); }
+int main() {
+  std::string first_name, last_name;
+  std::cout << "Input your name:" << '\n';
+  std::cin >> first_name >> last_name;
+  kYourName = first_name + " " + last_name;
+  return run_autograder();
+}
