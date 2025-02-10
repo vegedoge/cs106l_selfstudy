@@ -14,7 +14,7 @@ Student::Student() {
 }
 
 // methods
-std::string Student::getName() {
+std::string Student::getName() const{
   return this->name;
 }
 
@@ -22,7 +22,7 @@ std::string Student::getState() {
   return this->state;
 }
 
-int Student::getAge() {
+int Student::getAge() const {
   return this->age;
 }
 

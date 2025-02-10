@@ -12,9 +12,9 @@ class Student {
     // default constructor
     Student();
     // method
-    std::string getName();
+    std::string getName() const;
     std::string getState();
-    int getAge();
+    int getAge() const;
 
     void setName(std::string name);
     void setState(std::string state);
