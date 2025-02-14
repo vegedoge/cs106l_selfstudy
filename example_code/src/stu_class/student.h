@@ -15,6 +15,8 @@ class Student {
     std::string getName() const;
     std::string getState();
     int getAge() const;
+    bool operator < (const Student &rhs) const;
+    friend bool operator> (const Student &lhs, const Student &rhs);
 
     void setName(std::string name);
     void setState(std::string state);
@@ -22,3 +24,7 @@ class Student {
 
     ~Student();
 };
+
+bool operator> (const Student& lhs, const Student& rhs) {
+  return lhs.age > rhs.age;
+}

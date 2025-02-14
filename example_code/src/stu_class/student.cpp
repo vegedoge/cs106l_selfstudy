@@ -38,6 +38,10 @@ void Student::setAge(int age) {
   this->age = age;
 }
 
+bool Student::operator<(const Student& rhs) const {
+  return this -> age < rhs.age;
+}
+
 Student::~Student() {
   // destructor
 }
