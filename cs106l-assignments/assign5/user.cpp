@@ -63,3 +63,66 @@ void User::set_friend(size_t index, const std::string& name)
  * STUDENT TODO:
  * The definitions for your custom operators and special member functions will go here!
  */
+std::ostream &operator<<(std::ostream& outStream, User& target) {
+  outStream << "User(name=" << target.get_name() << ", friends=[";
+  for (size_t i = 0; i < target.size(); ++i) {
+    outStream << target._friends[i];
+    if (i != target.size() - 1) {
+      outStream << ", ";
+    }
+  }
+  outStream << "])";
+  return outStream;
+}
+
+/**
+ * Destructor for the User class.
+ */
+User::~User() {
+  delete[] _friends;
+}
+
+/**
+ * Copy constructor for the User class.
+ */
+User::User(const User& user)
+  : _name(user._name),
+  _size(user._size),
+  _capacity(user._capacity),
+  _friends(new std::string[user._capacity]) {
+  for (size_t i = 0; i < _size; ++i) {
+    _friends[i] = user._friends[i];
+  }
+}
+
+/**
+ * Copy assignment operator for the User class.
+ */
+User& User::operator=(const User& user) {
+  if (this != &user) {
+    delete[] _friends;
+    _name = user._name;
+    _size = user._size;
+    _capacity = user._capacity;
+    _friends = new std::string[user._capacity];
+    std::copy(user._friends, user._friends + user._size, _friends);
+  }
+  return *this;
+}
+
+/**
+ * += operator for the User class.
+ */
+User& User::operator+=(const User& other) {
+  add_friend(other.get_name());
+  // cast const type to non-const type
+  const_cast<User&>(other).add_friend(_name);
+  return *this;
+}
+
+/**
+ * < operator for the User class.
+ */
+bool User::operator<(const User& other) const{
+  return _name < other.get_name();
+}
