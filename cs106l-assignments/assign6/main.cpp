@@ -9,6 +9,7 @@
 #include <vector>
 
 /** STUDENT_TODO: You will need to include a relevant header file here! */
+#include <optional>
 
 #include "autograder/utils.hpp"
 
@@ -52,11 +53,21 @@ public:
    * @param course_title The title of the course to find.
    * @return You will need to figure this out!
    */
-  FillMeIn find_course(std::string course_title)
+  std::optional<Course> find_course(std::string course_title)
   {
     /* STUDENT_TODO: Implement this method! You will need to change the return
      * type. */
-    throw std::runtime_error("find_course not implemented");
+    // throw std::runtime_error("find_course not implemented");
+    auto it = std::find_if(courses.begin(), courses.end(),
+                           [&course_title](const Course &course)
+                           {
+                             return course.title == course_title;
+                           });
+    if (it != courses.end()) {
+      return *it;
+    } else {
+      return std::nullopt;
+    }
   }
 
 private:
@@ -79,12 +90,18 @@ main(int argc, char* argv[])
 
     /* STUDENT_TODO: Change this condition. How can you check if the database
      * has the desired course? */
-    if (false) {
+    if (course.has_value()) {
       std::cout << "Found course: " << course->title << ","
                 << course->number_of_units << "," << course->quarter << "\n";
     } else {
       std::cout << "Course not found.\n";
     }
+    // if (false) {
+    //   std::cout << "Found course: " << course->title << ","
+    //             << course->number_of_units << "," << course->quarter << "\n";
+    // } else {
+    //   std::cout << "Course not found.\n";
+    // }
 
     return 0;
   }
